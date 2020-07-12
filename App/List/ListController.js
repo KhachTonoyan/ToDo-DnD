@@ -12,6 +12,6 @@ class ListController {
 }
 
 const list = new ListController(new ListModel,new ListView);
-const {addContainer,mainDiv} = list.view;
+const {addContainer, mainDiv} = list.view;
 export {addContainer as form, mainDiv as listDiv};
 export default list;
