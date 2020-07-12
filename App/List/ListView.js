@@ -5,11 +5,15 @@ const mainDiv = document.createElement("div");
 mainDiv.className = "mainDiv";
 mainDiv.classList.add("list")
 
+
+
 //adding new section was causing a complete update that resulted in a user data loss
+//push to list (state)
 function render(element) {
     const newSection = renderUtil(element);
 
     mainDiv.appendChild(newSection);
+    //list.push...
 }
 
 //moved this function out of the "render" to keep the code cleaner
@@ -19,21 +23,30 @@ function renderUtil(element) {
     header.textContent = `${element.value}`
 
     const category = document.createElement("div");
-    category.className = "cat_main"
+    category.classList.add("cat_main")
     category.appendChild(header); //add name
 
-    const taskInputBox = document.createElement("form");
+    //delete this
+    const taskInputBox = document.createElement("div");
     const input_id = new Date().getTime();
     taskInputBox.innerHTML = `<input type="text" id=${input_id}><br>`
 
     //when user clicks enter his task is being added to the top of the current container
     taskInputBox.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
-            event.preventDefault(); //to prevent autoupdate of the page
             const taskInput = document.getElementById(input_id);
 
                                                         //this node can use ItemView as a constructor
-            taskInputBox.insertAdjacentHTML('afterend', `<p>${taskInput.value}</p>`)
+                                                        const bTest = document.createElement("button");
+                                                        bTest.innerText = "X"
+                                                        bTest.onclick = function foo(){
+                                                            this.parentNode.remove();
+                                                        }
+                                                        const pTest = document.createElement("p");
+                                                        pTest.textContent =taskInput.value;
+                                                        pTest.appendChild(bTest)
+            // taskInputBox.insertAdjacentHTML('afterend',)
+            taskInputBox.appendChild(pTest)
             taskInput.value = "";
         }
     })
@@ -41,6 +54,7 @@ function renderUtil(element) {
     category.appendChild(taskInputBox);
     return category;
 }
+
 
 
 export default class ListView {
