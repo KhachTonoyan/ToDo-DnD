@@ -3,7 +3,7 @@ export default class AddCategory{  // Singleton
         if(AddCategory.isCreated){
             return AddCategory.instanse
         }
-        
+
         AddCategory.instanse = this;
         AddCategory.isCreated = true;
         this.containerAddCat = document.createElement("addSection");
@@ -17,7 +17,7 @@ export default class AddCategory{  // Singleton
 
         this.buttonAddCat.id = "addSection_btn" //gave it an id to controll from css
 
-        this.buttonAddCat.setAttribute("class", "fa fa-plus");
+        this.buttonAddCat.setAttribute("class", "fa fa-plus"); //added plus sign insted of classic button
 
         this.containerAddCat.append(this.inputAddCat, this.buttonAddCat);
     }

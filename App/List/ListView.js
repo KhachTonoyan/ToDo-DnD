@@ -1,6 +1,6 @@
 import AddCategory from "../../addCategory/addCategory.js"
 
-const { containerAddCat, inputAddCat, buttonAddCat } = new AddCategory()
+const { containerAddCat, inputAddCat, buttonAddCat } = new AddCategory();
 const mainDiv = document.createElement("div");
 mainDiv.className = "mainDiv";
 mainDiv.classList.add("list")
@@ -12,20 +12,29 @@ function render(element) {
     mainDiv.appendChild(newSection);
 }
 
-
-
 //moved this function out of the "render" to keep the code cleaner
-function renderUtil({ name, id }) {
+//currently box id is missing
+function renderUtil(element) {
+    const header = document.createElement("p"); //name of the section
+    header.textContent = `${element.value}`
+
     const category = document.createElement("div");
     category.className = "cat_main"
+    category.appendChild(header); //add name
+
     const taskInputBox = document.createElement("form");
-    taskInputBox.innerHTML = `<input type="text" id="task_input_box"><br>`
+    const input_id = new Date().getTime();
+    taskInputBox.innerHTML = `<input type="text" id=${input_id}><br>`
 
     //when user clicks enter his task is being added to the top of the current container
     taskInputBox.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
             event.preventDefault(); //to prevent autoupdate of the page
-            category.insertAdjacentHTML('afterbegin', `<p>sdf</p>`)
+            const taskInput = document.getElementById(input_id);
+
+                                                        //this node can use ItemView as a constructor
+            taskInputBox.insertAdjacentHTML('afterend', `<p>${taskInput.value}</p>`)
+            taskInput.value = "";
         }
     })
 
