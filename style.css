@@ -1,0 +1,8 @@
+.list{
+    display: flex;
+}
+.list>div{
+    height: 500px;
+    width: 300px;
+    border: 1px solid black;
+}
