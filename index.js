@@ -1,4 +1,4 @@
-import list,{form,listDiv} from "./App/List/ListController.js"
+import list, {form, listDiv} from "./App/List/ListController.js"
 
 const app = document.getElementById("app")
 
