@@ -13,7 +13,7 @@ export default class ListModel {
     
     addToList = (element) => {
         if(!isEmpty(element.value)){
-            this.list.push({name:element.value,items:[],id:Date.now()})
+            this.list.push({name:element.value, items:[], id:Date.now()})
             element.value="";
             this.update(this.list)
         }
