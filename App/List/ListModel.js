@@ -10,11 +10,11 @@ export default class ListModel {
     constructor(){
         this.list = []
     }
+    
     addToList = (element) => {
         if(!isEmpty(element.value)){
-            this.list.push({name:element.value,items:[],id:Date.now()})
+            this.update(element);
             element.value="";
-            this.update(this.list)
         }
     }
 

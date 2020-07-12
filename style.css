@@ -1,6 +1,47 @@
+body{
+    background: linear-gradient(to right, #fffcdc, #d9a7c7);
+}
+
+.mainDiv{
+    position: absolute;
+    top: 25%;
+    margin-bottom: 30px;
+}
+
+/*added distance between sections*/
+.cat_main{
+    margin-right: 30px;
+}
+
+/* positioned add-section div at the top center*/
+addSection{
+    position: absolute;
+    width: 200px;
+    height: 10px;
+	top:0;
+	bottom: 94%;
+	left: 0;
+	right: 0;
+    margin: auto;
+}
+
+/*button design*/
+#addSection_btn{
+    margin-top : 10px;
+    margin-left: 27%;
+    border : none;
+    border-radius: 50px;
+    height: 70px;
+    width : 70px;
+    background-color: #d9a7c7;
+    font-size: 50px;
+    color :white;
+}
+
 .list{
     display: flex;
 }
+
 .list>div{
     height: 500px;
     width: 300px;
