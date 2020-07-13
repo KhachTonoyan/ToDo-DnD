@@ -8,30 +8,22 @@ class createItemState{
 
 class ItemState{
     constructor(){
-        this.items = []
+        this.items = {}
     }
     create(id){
         let newItem = new createItemState(id);
-        this.items.push(newItem)
+        this.items = {...this.items,[id]:newItem}
+        console.log(this.items)
     }
     remove(id){
-        this.items=this.items.filter(item => item.id !== id)
+        delete this.items[id]
     }
     get(id){
-        for(let item of this.items){
-            if(item.id === id){
-                return item
-            }
-        }
+        return this.items[id]
     }
     change(id,description,coments){
-        for(let i=0;i<this.items.length;i++){
-            if(this.items[i].id === id){
-                this.items[i].description = description;
-                this.items[i].coments = coments;
-                return
-            }
-        }
+        this.items[id].description = description;
+        this.items[id].coments = coments;
     }
 }
 

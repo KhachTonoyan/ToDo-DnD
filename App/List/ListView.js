@@ -9,7 +9,7 @@ const modal = document.getElementById("myModal");
 const closeModal = document.getElementById("close");
 const comentsArea = document.getElementById("Coments")
 const descriptionArea = document.getElementById("Description")
-let thisItemID;
+let thisItemID = "";
 
 closeModal.onclick = function() {
   modal.style.display = "none";
@@ -17,7 +17,7 @@ closeModal.onclick = function() {
   thisItemID = "";
 }
 window.onclick = function(event) {
-  if (event.target == modal) {
+  if (event.target === modal) {
     modal.style.display = "none";
     itemState.change(thisItemID,descriptionArea.value,comentsArea.value)
     thisItemID = "";
@@ -37,6 +37,7 @@ function render(element) {
 function initializationState(element){
     element.id = Date.now();
     itemState.create(element.id);
+    ////
     element.ondblclick = function() {
         modal.style.display = "block";
         thisItemID = this.id;
