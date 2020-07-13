@@ -13,7 +13,7 @@ let thisItemID;
 
 closeModal.onclick = function() {
   modal.style.display = "none";
-  itemState.change(thisItemID,descriptionArea.textContent,comentsArea.textContent)
+  itemState.change(thisItemID,descriptionArea.value,comentsArea.value)
   thisItemID = "";
 }
 window.onclick = function(event) {
