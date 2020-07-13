@@ -47,3 +47,17 @@ addSection{
     width: 300px;
     border: 1px solid black;
 }
+
+.hide{
+    display:none;
+}
+
+.dragArea{
+    min-height: 100px;
+    margin:16px 0;
+    z-index: 1;
+}
+
+.dragEnter{
+    background-color: #957DA3;
+}
