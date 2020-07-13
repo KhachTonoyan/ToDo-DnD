@@ -46,6 +46,7 @@ addSection{
     height: 500px;
     width: 300px;
     border: 1px solid black;
+    text-align: center;
 }
 
 .hide{
@@ -55,9 +56,17 @@ addSection{
 .dragArea{
     min-height: 100px;
     margin:16px 0;
-    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .dragEnter{
     background-color: #957DA3;
+    z-index: 1;
+}
+.draggableItem{
+    cursor: -webkit-grab; cursor: grab;
+    text-align: center;
+    width: fit-content;
 }

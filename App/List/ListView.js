@@ -35,11 +35,9 @@ function createDragArea(element){
     }
     element.ondragenter = function(){
         this.classList.add("dragEnter")
-        console.log("enter")
     }
     element.ondragleave = function(){
         this.classList.remove("dragEnter")
-        console.log("leave")
     }
     element.ondrop = function(){
         this.append(draggedItem)
@@ -60,7 +58,7 @@ function renderUtil(element) {
     //delete this
     const taskInputBox = document.createElement("div");
     const input_id = Date.now();
-    taskInputBox.innerHTML = `<input type="text" id=${input_id}><br>`
+    taskInputBox.innerHTML = `<input type="text" placeholder="Add New Task" id=${input_id}><br>`
 
     //when user clicks enter his task is being added to the top of the current container
     taskInputBox.addEventListener('keypress', (event) => {
