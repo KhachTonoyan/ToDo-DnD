@@ -26,7 +26,6 @@ class ItemState{
     }
     change(id,description,coments){
         for(let i=0;i<this.items.length;i++){
-            console.log(description)
             if(this.items[i].id === id){
                 this.items[i].description = description;
                 this.items[i].coments = coments;

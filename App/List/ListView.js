@@ -40,7 +40,6 @@ function initializationState(element){
     element.ondblclick = function() {
         modal.style.display = "block";
         thisItemID = this.id;
-        console.log(itemState.get(thisItemID))
         const {coments,description} = itemState.get(thisItemID)
         comentsArea.value = coments;
         descriptionArea.value = description;
