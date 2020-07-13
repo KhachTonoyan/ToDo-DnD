@@ -1,11 +1,28 @@
 import AddCategory from "../../addCategory/addCategory.js"
+import itemState from "../Details/ItemState.js"
 
 const { containerAddCat, inputAddCat, buttonAddCat } = new AddCategory();
 const mainDiv = document.createElement("div");
 mainDiv.className = "mainDiv";
 mainDiv.classList.add("list")
+const modal = document.getElementById("myModal");
+const closeModal = document.getElementById("close");
+const comentsArea = document.getElementById("Coments")
+const descriptionArea = document.getElementById("Description")
+let thisItemID;
 
-
+closeModal.onclick = function() {
+  modal.style.display = "none";
+  itemState.change(thisItemID,descriptionArea.textContent,comentsArea.textContent)
+  thisItemID = "";
+}
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+    itemState.change(thisItemID,descriptionArea.value,comentsArea.value)
+    thisItemID = "";
+  }
+}
 
 //adding new section was causing a complete update that resulted in a user data loss
 //push to list (state)
@@ -16,6 +33,20 @@ function render(element) {
     mainDiv.appendChild(newSection);
     //list.push...
 }
+
+function initializationState(element){
+    element.id = Date.now();
+    itemState.create(element.id);
+    element.ondblclick = function() {
+        modal.style.display = "block";
+        thisItemID = this.id;
+        console.log(itemState.get(thisItemID))
+        const {coments,description} = itemState.get(thisItemID)
+        comentsArea.value = coments;
+        descriptionArea.value = description;
+      }
+}
+
 function createDraggable(element){
     element.draggable = true;
     element.id = Date.now();
@@ -68,11 +99,13 @@ function renderUtil(element) {
             const deleteButton = document.createElement("button");
             deleteButton.innerText = "X"
             deleteButton.onclick = function foo(){
+                itemState.remove(this.parentNode.id)
                 this.parentNode.remove();
             }
             const item = document.createElement("p");
             createDraggable(item)
-            item.textContent =taskInput.value;
+            initializationState(item)
+            item.textContent = taskInput.value;
             item.appendChild(deleteButton)
             tasksBox.appendChild(item)
             taskInput.value = "";
