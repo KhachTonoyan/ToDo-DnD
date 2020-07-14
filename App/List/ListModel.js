@@ -13,6 +13,7 @@ export default class ListModel {
     
     addToList = (element) => {
         if(!isEmpty(element.value)){
+            console.log(element.value)
             this.update(element);
             element.value="";
         }

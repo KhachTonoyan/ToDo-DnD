@@ -24,20 +24,19 @@ window.onclick = function(event) {
   }
 }
 
-//adding new section was causing a complete update that resulted in a user data loss
-//push to list (state)
+
 let draggedItem;
 function render(element) {
-    const newSection = renderUtil(element);
+    const newSection = renderUtil(element.value);
+    // console.log(element)
 
     mainDiv.appendChild(newSection);
-    //list.push...
 }
 
-function initializationState(element){
+function initializationState(element, parent_id){
     element.id = Date.now();
-    itemState.create(element.id);
-    ////
+    itemState.create(element.id, parent_id);
+
     element.ondblclick = function() {
         modal.style.display = "block";
         thisItemID = this.id;
@@ -56,6 +55,7 @@ function createDraggable(element){
         setTimeout(() => this.classList.add("hide"))
     }
     element.ondragend = function(){
+        console.log("end")
         this.classList.remove("hide")
     }
 }
@@ -75,28 +75,41 @@ function createDragArea(element){
         this.classList.remove("dragEnter")
     }
 }
-//moved this function out of the "render" to keep the code cleaner
-//currently box id is missing
+
 function renderUtil(element) {
-    const header = document.createElement("p"); //name of the section
-    header.textContent = element.value
+    const header = document.createElement("p"); 
+    header.textContent = element
 
     const category = document.createElement("div");
+    const parent_id = Date.now();
     category.classList.add("cat_main")
-    category.appendChild(header); //add name
+    category.appendChild(header);
     const tasksBox = document.createElement("div")
     createDragArea(tasksBox)
-    //delete this
     const taskInputBox = document.createElement("div");
     const input_id = Date.now();
     taskInputBox.innerHTML = `<input type="text" placeholder="Add New Task" id=${input_id}><br>`
 
-    //when user clicks enter his task is being added to the top of the current container
+    let list = [];
+
+    list.push("test");
+    list.push("test2");
+    list.forEach(x => tasksBox.appendChild(addItemUtil(x, parent_id)))
+
     taskInputBox.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
             const taskInput = document.getElementById(input_id);
-            //this node can use ItemView as a constructor
-            const deleteButton = document.createElement("button");
+            tasksBox.appendChild(addItemUtil(taskInput.value, parent_id))
+            taskInput.value = "";
+        }
+    })
+    category.append(taskInputBox,tasksBox);
+    return category;
+}
+
+//brought this piece of code out to keep the DRY principle
+function addItemUtil(val, parent_id){
+    const deleteButton = document.createElement("button");
             deleteButton.innerText = "X"
             deleteButton.onclick = function foo(){
                 itemState.remove(this.parentNode.id)
@@ -104,16 +117,10 @@ function renderUtil(element) {
             }
             const item = document.createElement("p");
             createDraggable(item)
-            initializationState(item)
-            item.textContent = taskInput.value;
+            initializationState(item, parent_id)
+            item.textContent = val;
             item.appendChild(deleteButton)
-            tasksBox.appendChild(item)
-            taskInput.value = "";
-        }
-    })
-
-    category.append(taskInputBox,tasksBox);
-    return category;
+            return item;
 }
 
 
