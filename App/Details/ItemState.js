@@ -14,7 +14,8 @@ class ItemState{
     create(id, parent_id){
         let newItem = new createItemState(id, parent_id);
         this.items = {...this.items,[id]:newItem}
-        console.log(this.items)
+        // console.log(this.items)
+        return newItem;
     }
     remove(id){
         delete this.items[id]
@@ -28,6 +29,7 @@ class ItemState{
     change(id,description,coments){
         this.items[id].description = description;
         this.items[id].coments = coments;
+        return this.items[id];
     }
 }
 
