@@ -11,6 +11,16 @@ const comentsArea = document.getElementById("Coments")
 const descriptionArea = document.getElementById("Description")
 let thisItemID = "";
 
+let list = new Map();
+
+let data = JSON.parse(localStorage.getItem("data"));
+
+if (data && data.length != 0)
+    data.forEach(el => {
+        render(el[1].name, el[1])
+    })
+
+
 closeModal.onclick = function () {
     changeUtil();
 }
@@ -24,26 +34,23 @@ function changeUtil() {
     modal.style.display = "none";
     let changedItem = itemState.change(thisItemID, descriptionArea.value, comentsArea.value)
     list.get(changedItem.parent_id)[changedItem.id] = changedItem;
-    
+    localStorage.setItem("data", JSON.stringify(Array.from(list.entries())));
     thisItemID = "";
 }
 
-///////
-let list = new Map();
-///////
 
 let draggedItem;
-function render(element) {
-    const newSection = renderUtil(element.value);
+function render(element, childs) {
+    const newSection = renderUtil(element, childs);
 
     mainDiv.appendChild(newSection);
 }
 
-function initializationState(element, parent_id) {
-    let newItem = itemState.create(element.id, parent_id);
+function initializationState(element, parent_id, message, comments, description) {
+    let newItem = itemState.create(element.id, parent_id, message, comments, description);
 
     list.get(parent_id)[newItem.id] = newItem;
-    console.log(list.get(parent_id))
+    localStorage.setItem("data", JSON.stringify(Array.from(list.entries())));
 
     element.ondblclick = function () {
         modal.style.display = "block";
@@ -54,23 +61,22 @@ function initializationState(element, parent_id) {
     }
 }
 
-//test
 
 function createDraggable(element, parent_id) {
     element.draggable = true;
-    element.id = Date.now();
+    element.id = Date.now() * Math.random();
     element.classList.add("draggableItem");
     element.ondragstart = function () {
         draggedItem = this;
         setTimeout(() => this.classList.add("hide"))
     }
     element.ondragend = function (e) {
-        let newParent = parseInt(e.toElement.parentNode.parentNode.id);
-        console.log(list.get(parent_id));
+        let newParent = parseFloat(e.toElement.parentNode.parentNode.id);
         const elid = element.id;
         list.get(parent_id)[elid].parent_id = newParent;
-        list.get(newParent).elid = list.get(parent_id)[elid];
-        delete list.get(parent_id).elid;
+        list.get(newParent)[elid] = list.get(parent_id)[elid];
+        delete list.get(parent_id)[elid];
+        localStorage.setItem("data", JSON.stringify(Array.from(list.entries())));
         this.classList.remove("hide")
     }
 }
@@ -91,24 +97,32 @@ function createDragArea(element) {
     }
 }
 
-function renderUtil(element) {
+function renderUtil(element, childs) {
     const header = document.createElement("p");
     header.textContent = element
 
     const category = document.createElement("div");
-    const parent_id = Date.now();
-    list.set(parent_id, {}); ///
-    console.log(parent_id);
+    let parent_id = Date.now() * Math.random();;
+
+    if (childs && Object.keys(childs)[1]) parent_id = childs[Object.keys(childs)[1]].parent_id;
+    else parent_id = Date.now() * Math.random();
+    list.set(parent_id, { name: element });
     category.id = parent_id;
     category.classList.add("cat_main")
     category.appendChild(header);
     const tasksBox = document.createElement("div")
     createDragArea(tasksBox)
     const taskInputBox = document.createElement("div");
-    const input_id = Date.now();
+    const input_id = Date.now() * Math.random();
     taskInputBox.innerHTML = `<input type="text" placeholder="Add New Task" id=${input_id}><br>`
 
-    // list.forEach(x => tasksBox.appendChild(addItemUtil(x, parent_id)))
+    if (childs) {
+        for (const [key, value] of Object.entries(childs)) {
+            if (!isNaN(key)) {
+                tasksBox.appendChild(addItemUtil(value.message, parent_id, value.coments, value.description));
+            }
+        }
+    }
 
     taskInputBox.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
@@ -121,19 +135,24 @@ function renderUtil(element) {
     return category;
 }
 
-//brought this piece of code out to keep the DRY principle
-function addItemUtil(val, parent_id) {
+function addItemUtil(val, parent_id, comments, description) {
+    const item = document.createElement("p");
+    item.id = Date.now() * Math.random();
+    createDraggable(item, parent_id)
+    initializationState(item, parent_id, val, comments, description)
+    item.textContent = val;
     const deleteButton = document.createElement("button");
     deleteButton.innerText = "X"
     deleteButton.onclick = function foo() {
+        list.forEach(el => {
+            if (el[item.id]) {
+                delete el[item.id];
+            }
+        })
+        localStorage.setItem("data", JSON.stringify(Array.from(list.entries())));
         itemState.remove(this.parentNode.id)
         this.parentNode.remove();
     }
-    const item = document.createElement("p");
-    item.id = Date.now();
-    createDraggable(item, parent_id)
-    initializationState(item, parent_id)
-    item.textContent = val;
     item.appendChild(deleteButton)
     return item;
 }
@@ -152,7 +171,7 @@ export default class ListView {
         this.addButton.onclick = () => this.add(this.addInput)
     }
     listUpdate = (list) => {
-        render(list)
+        render(list.value)
     }
 }
 

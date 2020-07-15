@@ -1,32 +1,32 @@
-class createItemState{
-    constructor(id, parent_id){
+class createItemState {
+    constructor(id, parent_id, message, comments, description) {
         this.id = id;
-        this.description = "";
-        this.coments="";
+        this.description = description || "";
+        this.coments = comments || "";
         this.parent_id = parent_id;
+        this.message = message;
     }
 }
 
-class ItemState{
-    constructor(){
+class ItemState {
+    constructor() {
         this.items = {}
     }
-    create(id, parent_id){
-        let newItem = new createItemState(id, parent_id);
-        this.items = {...this.items,[id]:newItem}
-        // console.log(this.items)
+    create(id, parent_id, message, comments, description) {
+        let newItem = new createItemState(id, parent_id, message, comments, description);
+        this.items = { ...this.items, [id]: newItem }
         return newItem;
     }
-    remove(id){
+    remove(id) {
         delete this.items[id]
     }
-    get(id){
+    get(id) {
         return this.items[id]
     }
-    getList(){
+    getList() {
         return this.items;
     }
-    change(id,description,coments){
+    change(id, description, coments) {
         this.items[id].description = description;
         this.items[id].coments = coments;
         return this.items[id];
