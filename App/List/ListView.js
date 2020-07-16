@@ -10,6 +10,7 @@ const closeModal = document.getElementById("close");
 const comentsArea = document.getElementById("Coments")
 const descriptionArea = document.getElementById("Description")
 let thisItemID = "";
+let parentId = "";
 
 let list = new Map();
 
@@ -33,8 +34,7 @@ window.onclick = function (event) {
 function changeUtil() {
     modal.style.display = "none";
     let changedItem = itemState.change(thisItemID, descriptionArea.value, comentsArea.value)
-    list.get(changedItem.parent_id)[changedItem.id] = changedItem;
-    localStorage.setItem("data", JSON.stringify(Array.from(list.entries())));
+    list.get(changedItem.parent_id)[changedItem.id] = changedItem; //
     thisItemID = "";
 }
 
@@ -49,8 +49,7 @@ function render(element, childs) {
 function initializationState(element, parent_id, message, comments, description) {
     let newItem = itemState.create(element.id, parent_id, message, comments, description);
 
-    list.get(parent_id)[newItem.id] = newItem;
-    localStorage.setItem("data", JSON.stringify(Array.from(list.entries())));
+    list.get(parent_id)[newItem.id] = newItem;//
 
     element.ondblclick = function () {
         modal.style.display = "block";
@@ -62,21 +61,22 @@ function initializationState(element, parent_id, message, comments, description)
 }
 
 
-function createDraggable(element, parent_id) {
+function createDraggable(element) {
     element.draggable = true;
-    element.id = Date.now() * Math.random();
+    element.id = Math.floor(Date.now() * (Math.random()*1000));
     element.classList.add("draggableItem");
     element.ondragstart = function () {
         draggedItem = this;
         setTimeout(() => this.classList.add("hide"))
     }
+
     element.ondragend = function (e) {
-        let newParent = parseFloat(e.toElement.parentNode.parentNode.id);
+        //
+        let newParent = parseInt(e.toElement.parentNode.parentNode.id);
         const elid = element.id;
-        list.get(parent_id)[elid].parent_id = newParent;
-        list.get(newParent)[elid] = list.get(parent_id)[elid];
-        delete list.get(parent_id)[elid];
-        localStorage.setItem("data", JSON.stringify(Array.from(list.entries()))); // bring out
+        list.get(newParent)[elid] = list.get(parentId)[elid];
+        list.get(newParent)[elid].parent_id= newParent;
+        delete list.get(parentId)[elid];
         this.classList.remove("hide")
     }
 }
@@ -85,10 +85,11 @@ function createDragArea(element) {
     element.ondragover = function (e) {
         e.preventDefault()
     }
-    element.ondragenter = function () {
+    element.ondragenter = function (e) {
         this.classList.add("dragEnter")
     }
-    element.ondragleave = function () {
+    element.ondragleave = function (e) {
+        parentId = parseInt(e.path[1].id);
         this.classList.remove("dragEnter")
     }
     element.ondrop = function () {
@@ -102,10 +103,9 @@ function renderUtil(element, childs) {
     header.textContent = element
 
     const category = document.createElement("div");
-    let parent_id = Date.now() * Math.random();;
+    let parent_id = Math.floor(Date.now() * (Math.random()*1000))
 
     if (childs && Object.keys(childs)[1]) parent_id = childs[Object.keys(childs)[1]].parent_id;
-    else parent_id = Date.now() * Math.random();
     list.set(parent_id, { name: element });
     category.id = parent_id;
     category.classList.add("cat_main")
@@ -113,9 +113,10 @@ function renderUtil(element, childs) {
     const tasksBox = document.createElement("div")
     createDragArea(tasksBox)
     const taskInputBox = document.createElement("div");
-    const input_id = Date.now() * Math.random();
+    const input_id = Math.floor(Date.now() * (Math.random()*1000))
     taskInputBox.innerHTML = `<input type="text" placeholder="Add New Task" id=${input_id}><br>`
 
+    //
     if (childs) {
         for (const [key, value] of Object.entries(childs)) {
             if (!isNaN(key)) {
@@ -137,19 +138,19 @@ function renderUtil(element, childs) {
 
 function addItemUtil(val, parent_id, comments, description) {
     const item = document.createElement("p");
-    item.id = Date.now() * Math.random();
-    createDraggable(item, parent_id)
+    item.id = Math.floor(Date.now() * (Math.random()*1000))
+    createDraggable(item)
     initializationState(item, parent_id, val, comments, description)
     item.textContent = val;
     const deleteButton = document.createElement("button");
     deleteButton.innerText = "X"
     deleteButton.onclick = function foo() {
+        //
         list.forEach(el => {
             if (el[item.id]) {
                 delete el[item.id];
             }
         })
-        localStorage.setItem("data", JSON.stringify(Array.from(list.entries())));
         itemState.remove(this.parentNode.id)
         this.parentNode.remove();
     }
@@ -175,6 +176,14 @@ export default class ListView {
     }
 }
 
+window.onbeforeunload = function(){
+    localStorage.setItem("data", JSON.stringify(Array.from(list.entries())));
+}
+
+document.getElementById("clear").addEventListener('click', () => {
+    list = new Map();
+    localStorage.clear();
+})
 
 
 

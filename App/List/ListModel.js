@@ -5,7 +5,6 @@ function isEmpty(text){
     return true
 }
 
-
 export default class ListModel {
     constructor(){
         this.list = []

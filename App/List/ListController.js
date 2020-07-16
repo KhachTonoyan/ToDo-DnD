@@ -1,6 +1,7 @@
 import ListModel from "./ListModel.js";
 import ListView from "./ListView.js";
 
+
 class ListController {
     constructor(model,view){
         this.model = model;

@@ -8,6 +8,7 @@ class createItemState {
     }
 }
 
+
 class ItemState {
     constructor() {
         this.items = {}
