@@ -21,7 +21,6 @@ class ItemState{
         delete this.items[parentID][id]
     }
     get(id,parentID){
-        console.log(this.items[parentID])
         return this.items[parentID][id]
     }
     change(id,parentID,description,coments){

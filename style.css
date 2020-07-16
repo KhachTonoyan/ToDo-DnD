@@ -8,12 +8,10 @@ body{
     margin-bottom: 30px;
 }
 
-/*added distance between sections*/
 .cat_main{
     margin-right: 30px;
 }
 
-/* positioned add-section div at the top center*/
 addSection{
     position: absolute;
     width: 200px;
@@ -25,7 +23,6 @@ addSection{
     margin: auto;
 }
 
-/*button design*/
 #addSection_btn{
     margin-top : 10px;
     margin-left: 27%;
@@ -121,4 +118,25 @@ addSection{
     bottom: 70px;
     width: 60px;
     height: 20px;
+}
+
+#weather{
+    vertical-align:top;
+    padding:0 20px;
+}
+#weather>p{
+    display: inline-block;
+    font-size: 30px;
+    color: #CCA6C6;
+}
+#weather>img{
+    opacity: 0.8;
+}
+
+#time{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 30px;
+    color:#FDFDDE;
 }
