@@ -76,7 +76,7 @@ function createDraggable(element, parent_id) {
         list.get(parent_id)[elid].parent_id = newParent;
         list.get(newParent)[elid] = list.get(parent_id)[elid];
         delete list.get(parent_id)[elid];
-        localStorage.setItem("data", JSON.stringify(Array.from(list.entries())));
+        localStorage.setItem("data", JSON.stringify(Array.from(list.entries()))); // bring out
         this.classList.remove("hide")
     }
 }

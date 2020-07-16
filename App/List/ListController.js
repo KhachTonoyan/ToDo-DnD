@@ -8,6 +8,7 @@ class ListController {
 
         this.view.bindOnAddToList(this.model.addToList)
         this.model.bindOnListUpdate(this.view.listUpdate)
+        this.model.bindOnGetData(this.view.getData)
     }
 }
 

@@ -11,6 +11,10 @@ export default class ListModel {
         this.list = []
     }
     
+    bindOnGetData(cb){
+        this.getData = cb;
+    }
+
     addToList = (element) => {
         if(!isEmpty(element.value)){
             console.log(element.value)
