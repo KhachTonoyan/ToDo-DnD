@@ -106,3 +106,19 @@ addSection{
   text-decoration: none;
   cursor: pointer;
 }
+
+#save{
+    position: fixed;
+    right: 50px;
+    bottom: 40px;
+    width: 60px;
+    height: 20px;
+}
+
+#clear{
+    position: fixed;
+    right: 50px;
+    bottom: 70px;
+    width: 60px;
+    height: 20px;
+}

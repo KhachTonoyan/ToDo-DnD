@@ -1,3 +1,5 @@
+import itemState from "../Details/ItemState.js";
+const items = itemState.getItems()
 function isEmpty(text){
     if(text.trim()){
         return false
@@ -8,7 +10,7 @@ function isEmpty(text){
 
 export default class ListModel {
     constructor(){
-        this.list = []
+        this.list = JSON.parse(localStorage.getItem('list')) || []
     }
     
     addToList = (element) => {
@@ -20,5 +22,21 @@ export default class ListModel {
 
     bindOnListUpdate = (cb) => {
         this.update = cb;
+    }
+    getInfoAboutCat = (config) => {
+        this.list.push(config)
+    }
+    onPageLoad = () => {
+        this.list.forEach(config => {
+            config.items = items[config.dragAreaID]
+            this.update({},config)
+        }) 
+    }
+    sendToLocalStorage = () =>{
+        itemState.sendToLocalStorage()
+        localStorage.setItem('list', JSON.stringify(this.list))
+    }
+    clearLocalStorage = () =>{
+        localStorage.clear()
     }
 }

@@ -1,6 +1,8 @@
 class createItemState{
-    constructor(id){
+    constructor(name,id,parentID){
+        this.name = name;
         this.id = id;
+        this.parentID = parentID;
         this.description = "";
         this.coments="";
     }
@@ -8,22 +10,33 @@ class createItemState{
 
 class ItemState{
     constructor(){
-        this.items = {}
+        this.items = JSON.parse(localStorage.getItem('items')) || {}
     }
-    create(id){
-        let newItem = new createItemState(id);
-        this.items = {...this.items,[id]:newItem}
-        console.log(this.items)
+    create(name,id,parentID){
+        let newItem = new createItemState(name,id,parentID);
+        this.items[parentID] = this.items[parentID] || {}
+        this.items[parentID][id] = newItem;
     }
-    remove(id){
-        delete this.items[id]
+    remove(id,parentID){
+        delete this.items[parentID][id]
     }
-    get(id){
-        return this.items[id]
+    get(id,parentID){
+        console.log(this.items[parentID])
+        return this.items[parentID][id]
     }
-    change(id,description,coments){
-        this.items[id].description = description;
-        this.items[id].coments = coments;
+    change(id,parentID,description,coments){
+        this.items[parentID][id].description = description;
+        this.items[parentID][id].coments = coments;
+    }
+    changeLocation(id,parentID,newParentID){
+        const item = this.items[parentID][id]
+        delete this.items[parentID][id]
+        this.items[newParentID] = this.items[newParentID] || {}
+        this.items[newParentID][id] = item
+    }
+    getItems = () => this.items
+    sendToLocalStorage = () =>{
+        localStorage.setItem('items', JSON.stringify(this.items))
     }
 }
 

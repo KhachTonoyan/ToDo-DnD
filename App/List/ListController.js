@@ -8,6 +8,10 @@ class ListController {
 
         this.view.bindOnAddToList(this.model.addToList)
         this.model.bindOnListUpdate(this.view.listUpdate)
+        this.view.bindOnCreatCat(this.model.getInfoAboutCat)
+        this.view.bindOnPageLoad(this.model.onPageLoad)
+        this.view.bindOnSendToLocalStorage(this.model.sendToLocalStorage)
+        this.view.bindOnClearLocalStorage(this.model.clearLocalStorage)
     }
 }
 
