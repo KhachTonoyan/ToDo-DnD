@@ -183,6 +183,7 @@ window.onbeforeunload = function(){
 document.getElementById("clear").addEventListener('click', () => {
     list = new Map();
     localStorage.clear();
+    location.reload();
 })
 
 
