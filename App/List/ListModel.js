@@ -38,5 +38,10 @@ export default class ListModel {
     }
     clearLocalStorage = () =>{
         localStorage.clear()
+        this.list = []
+        this.cleanContent()
+    }
+    bindOnCleanContent(cb){
+        this.cleanContent = cb
     }
 }

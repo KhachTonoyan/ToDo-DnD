@@ -165,6 +165,9 @@ export default class ListView {
     listUpdate = (list, config) => {
         this.onCreatCat(render(list, config))
     }
+    cleanContent(){
+        mainDiv.innerHTML = ""
+    }
     bindOnCreatCat = (cb) => {
         this.onCreatCat = cb
     }

@@ -36,6 +36,7 @@ class ItemState{
     getItems = () => this.items
     sendToLocalStorage = () =>{
         localStorage.setItem('items', JSON.stringify(this.items))
+        this.items = {}
     }
 }
 

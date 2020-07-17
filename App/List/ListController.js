@@ -12,6 +12,7 @@ class ListController {
         this.view.bindOnPageLoad(this.model.onPageLoad)
         this.view.bindOnSendToLocalStorage(this.model.sendToLocalStorage)
         this.view.bindOnClearLocalStorage(this.model.clearLocalStorage)
+        this.model.bindOnCleanContent(this.view.cleanContent)
     }
 }
 
